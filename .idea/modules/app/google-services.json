@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "658449822280",
+    "firebase_url": "https://itau-notes-508c0.firebaseio.com",
+    "project_id": "itau-notes-508c0",
+    "storage_bucket": "itau-notes-508c0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:658449822280:android:1e07ed899f75891817de7d",
+        "android_client_info": {
+          "package_name": "br.com.itau.itaunotes"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "658449822280-s3vmf7cdjc50mjjn3pjegc0s0k5ticq6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "br.com.itau.itaunotes",
+            "certificate_hash": "7e84b0b98bca3f5b2db8ee0d3d5ecf5a1190711c"
+          }
+        },
+        {
+          "client_id": "658449822280-tauq86iradlkhvbjfo3baphtunkno85j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB_yT1zFtPZ9vCsct9y31yk4qVDsHEf7XQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "658449822280-tauq86iradlkhvbjfo3baphtunkno85j.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
