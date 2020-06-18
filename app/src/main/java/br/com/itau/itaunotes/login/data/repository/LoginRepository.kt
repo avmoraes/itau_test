@@ -3,7 +3,7 @@ package br.com.itau.itaunotes.login.data.repository
 import br.com.itau.itaunotes.login.data.datasource.CacheDataSourceContract
 import br.com.itau.itaunotes.login.data.datasource.LoginDataSourceContract
 import br.com.itau.itaunotes.login.data.datasource.baseBaseCallBack
-import br.com.itau.itaunotes.login.domain.User
+import br.com.itau.itaunotes.login.domain.model.User
 
 interface LoginRepositoryContract{
     fun login(request: User,

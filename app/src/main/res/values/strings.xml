@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Itau Notes</string>
 
+    <!-- Login -->
     <string name="email_ed_hint_text">Email</string>
     <string name="password_ed_hint_text">Senha</string>
     <string name="login_bt_text">Login</string>
@@ -10,22 +11,18 @@
     <string name="login_save_info_alert_content">Deseja salvar os dados de Login desse usuário?</string>
     <string name="login_save_info_alert_yes_bt">Sim</string>
     <string name="login_save_info_alert_no_bt">Não</string>
-    <string name="title_activity_notes_list">NotesListActivity</string>
-    <!-- Strings used for fragments for navigation -->
-    <string name="first_fragment_label">First Fragment</string>
-    <string name="second_fragment_label">Second Fragment</string>
-    <string name="next">Next</string>
-    <string name="previous">Previous</string>
 
-    <string name="hello_first_fragment">Hello first fragment</string>
-    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
-    <string name="title_activity_login">LoginActivity</string>
-    <string name="prompt_email">Email</string>
-    <string name="prompt_password">Password</string>
-    <string name="action_sign_in">Sign in or register</string>
-    <string name="action_sign_in_short">Sign in</string>
-    <string name="welcome">"Welcome !"</string>
-    <string name="invalid_username">Not a valid username</string>
-    <string name="invalid_password">Password must be >5 characters</string>
-    <string name="login_failed">"Login failed"</string>
+    <!-- Notes List -->
+    <string name="notes_menu">Menu</string>
+    <string name="notes_menu_exclude_all">Excluir Notas</string>
+    <string name="notes_menu_logout">Logout</string>
+
+    <!-- Notes Detail -->
+    <string name="notes_detail_label">Titulo</string>
+    <string name="notes_detail_title_hint">Informe um título</string>
+    <string name="notes_detail_summary">Resumo</string>
+    <string name="notes_detail_content">Descrição</string>
+    <string name="notes_detail_save">Salvar Nota</string>
+    <string name="notes_detail_save_success">Nota salva com sucesso</string>
+
 </resources>

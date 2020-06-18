@@ -1,12 +1,12 @@
 package br.com.itau.itaunotes.login.data.datasource
 
 import android.content.SharedPreferences
-import br.com.itau.itaunotes.login.domain.User
+import br.com.itau.itaunotes.login.domain.model.User
 
 const val USER_KEY = "user_login"
 
 interface CacheDataSourceContract{
-    fun getUser():User
+    fun getUser(): User
     fun saveOrUpdateUser(user: User)
     fun containUserLogin(): Boolean
 }

@@ -1,4 +1,4 @@
-package br.com.itau.itaunotes.login.domain
+package br.com.itau.itaunotes.login.domain.model
 
 data class User(
     val email: String,

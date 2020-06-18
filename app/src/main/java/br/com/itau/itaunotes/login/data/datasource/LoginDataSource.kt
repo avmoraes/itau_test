@@ -1,7 +1,7 @@
 package br.com.itau.itaunotes.login.data.datasource
 
 import android.util.Log
-import br.com.itau.itaunotes.login.domain.User
+import br.com.itau.itaunotes.login.domain.model.User
 import com.google.firebase.auth.FirebaseAuth
 
 typealias baseBaseCallBack = () -> Unit

@@ -4,15 +4,15 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import br.com.itau.itaunotes.login.data.repository.LoginRepositoryContract
-import br.com.itau.itaunotes.login.domain.User
+import br.com.itau.itaunotes.login.domain.model.User
 
 interface LoginViewModelContract{
+
     fun bindLoading():LiveData<Boolean>
     fun bindValidEmail():LiveData<Boolean>
     fun bindValidPassword():LiveData<Boolean>
     fun bindLoginPassed():LiveData<Boolean>
     fun bindUserInfo():LiveData<User>
-
     fun login(email: String, password: String)
     fun saveLoggedUser()
     fun loadLoggedUser()

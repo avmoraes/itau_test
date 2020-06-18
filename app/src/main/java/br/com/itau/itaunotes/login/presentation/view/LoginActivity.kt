@@ -1,5 +1,6 @@
 package br.com.itau.itaunotes.login.presentation.view
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -10,9 +11,10 @@ import androidx.lifecycle.ViewModelProvider
 import br.com.itau.itaunotes.R
 import br.com.itau.itaunotes.commons.hideKeyBoard
 import br.com.itau.itaunotes.commons.viewmodel.ViewModelFactory
-import br.com.itau.itaunotes.login.domain.User
+import br.com.itau.itaunotes.login.domain.model.User
 import br.com.itau.itaunotes.login.presentation.viewmodel.LoginViewModel
 import br.com.itau.itaunotes.login.presentation.viewmodel.LoginViewModelContract
+import br.com.itau.itaunotes.notes.presentation.list.view.NotesListActivity
 import kotlinx.android.synthetic.main.activity_main.*
 
 class LoginActivity : AppCompatActivity(R.layout.activity_main) {
@@ -69,13 +71,22 @@ class LoginActivity : AppCompatActivity(R.layout.activity_main) {
                 ) { dialog, _ ->
                     viewModel.saveLoggedUser()
                     dialog.dismiss()
+                    goToNotesList()
                 }
                 setNegativeButton(R.string.login_save_info_alert_no_bt
                 ) { dialog, _ ->
                     dialog.dismiss()
+                    goToNotesList()
                 }
             }
             builder.create()
         }
+    }
+
+    private fun goToNotesList(){
+        val intent = Intent(this, NotesListActivity::class.java)
+        startActivity(intent)
+
+        finish()
     }
 }
