@@ -1,30 +1,27 @@
 package br.com.itau.itaunotes.notes.presentation.list.view
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import br.com.itau.itaunotes.R
-import br.com.itau.itaunotes.commons.viewmodel.ViewModelFactory
 import br.com.itau.itaunotes.login.presentation.view.LoginActivity
 import br.com.itau.itaunotes.notes.presentation.detail.view.NoteDetailActivity
 import br.com.itau.itaunotes.notes.presentation.list.view.adapter.ListItemAdapter
 import br.com.itau.itaunotes.notes.presentation.list.viewmodel.NotesListViewModel
 import kotlinx.android.synthetic.main.activity_notes_list.*
+import org.koin.android.ext.android.inject
 
 class NotesListActivity : AppCompatActivity(R.layout.activity_notes_list) {
 
-    private lateinit var viewModel: NotesListViewModel
+    private val viewModel: NotesListViewModel by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        viewModel = ViewModelProvider(this, ViewModelFactory(this)).get(NotesListViewModel::class.java)
 
         val adapter = ListItemAdapter()
         adapter.noteClick= { note ->

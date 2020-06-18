@@ -7,24 +7,22 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import br.com.itau.itaunotes.R
 import br.com.itau.itaunotes.commons.hideKeyBoard
-import br.com.itau.itaunotes.commons.viewmodel.ViewModelFactory
 import br.com.itau.itaunotes.login.domain.model.User
 import br.com.itau.itaunotes.login.presentation.viewmodel.LoginViewModel
-import br.com.itau.itaunotes.login.presentation.viewmodel.LoginViewModelContract
 import br.com.itau.itaunotes.notes.presentation.list.view.NotesListActivity
+import br.com.itau.itaunotes.notes.presentation.list.viewmodel.NotesListViewModel
 import kotlinx.android.synthetic.main.activity_main.*
+import org.koin.android.ext.android.get
+import org.koin.android.ext.android.inject
 
 class LoginActivity : AppCompatActivity(R.layout.activity_main) {
 
-    private lateinit var viewModel: LoginViewModelContract
+    private val viewModel: LoginViewModel by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        viewModel = ViewModelProvider(this, ViewModelFactory(this)).get(LoginViewModel::class.java)
 
         viewModel.bindValidEmail().observe(this, Observer<Boolean> { _ ->
             showMsg(R.string.login_empty_email_text)

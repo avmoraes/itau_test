@@ -7,7 +7,6 @@ import br.com.itau.itaunotes.login.data.repository.LoginRepositoryContract
 import br.com.itau.itaunotes.login.domain.model.User
 
 interface LoginViewModelContract{
-
     fun bindLoading():LiveData<Boolean>
     fun bindValidEmail():LiveData<Boolean>
     fun bindValidPassword():LiveData<Boolean>

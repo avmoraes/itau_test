@@ -6,26 +6,20 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.widget.ArrayAdapter
-import android.widget.SimpleAdapter
 import android.widget.Toast
-import androidx.core.view.get
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import br.com.itau.itaunotes.R
-import br.com.itau.itaunotes.commons.viewmodel.ViewModelFactory
 import br.com.itau.itaunotes.notes.domain.model.Note
 import br.com.itau.itaunotes.notes.presentation.detail.viewmodel.NoteDetailViewModel
-import br.com.itau.itaunotes.notes.presentation.list.viewmodel.NotesListViewModel
 import kotlinx.android.synthetic.main.activity_note_detail.*
+import org.koin.android.ext.android.inject
 
 class NoteDetailActivity : AppCompatActivity(R.layout.activity_note_detail) {
 
-    private lateinit var viewModel: NoteDetailViewModel
+    private val viewModel: NoteDetailViewModel by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        viewModel = ViewModelProvider(this, ViewModelFactory(this)).get(NoteDetailViewModel::class.java)
 
         //TODO Implement Loading here
         viewModel.loading().observe(this, Observer<Boolean> { _ ->
@@ -34,7 +28,11 @@ class NoteDetailActivity : AppCompatActivity(R.layout.activity_note_detail) {
 
         viewModel.priorityList().observe(this, Observer<List<Int>> { list ->
             notePrioritySpinner.apply {
-                adapter = ArrayAdapter<Int>(this@NoteDetailActivity, android.R.layout.simple_spinner_item, list)
+                adapter = ArrayAdapter<Int>(
+                    this@NoteDetailActivity,
+                    android.R.layout.simple_spinner_item,
+                    list
+                )
             }
         })
 
