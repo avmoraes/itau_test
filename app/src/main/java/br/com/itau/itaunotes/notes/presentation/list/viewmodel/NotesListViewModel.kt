@@ -41,6 +41,7 @@ class NotesListViewModel(
 
             withContext(Main){
                 loadingLiveData.value = false
+                listLiveData.value = listOf()
             }
         }
     }

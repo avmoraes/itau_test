@@ -14,8 +14,10 @@ import kotlinx.coroutines.withContext
 interface NoteDetailViewModelContract{
     fun loading(): LiveData<Boolean>
     fun noteSaved(): LiveData<Boolean>
+    fun priorityList(): LiveData<List<Int>>
 
     fun addNote(note: Note)
+    fun loadProperties()
 }
 
 class NoteDetailViewModel(
@@ -24,6 +26,9 @@ class NoteDetailViewModel(
 
     private val loading = MutableLiveData<Boolean>()
     private val noteSaved = MutableLiveData<Boolean>()
+    private val priorities = MutableLiveData<List<Int>>()
+
+    private val priorityList = listOf(1,2,3,4,5)
 
     override fun loading(): LiveData<Boolean> {
         return loading
@@ -31,6 +36,10 @@ class NoteDetailViewModel(
 
     override fun noteSaved(): LiveData<Boolean> {
         return noteSaved
+    }
+
+    override fun priorityList(): LiveData<List<Int>> {
+        return priorities
     }
 
     override fun addNote(note: Note) {
@@ -44,5 +53,9 @@ class NoteDetailViewModel(
                 noteSaved.value = true
             }
         }
+    }
+
+    override fun loadProperties() {
+        priorities.value = priorityList
     }
 }

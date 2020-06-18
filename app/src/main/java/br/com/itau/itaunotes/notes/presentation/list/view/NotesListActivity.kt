@@ -6,11 +6,14 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import br.com.itau.itaunotes.R
 import br.com.itau.itaunotes.commons.viewmodel.ViewModelFactory
 import br.com.itau.itaunotes.login.presentation.view.LoginActivity
 import br.com.itau.itaunotes.notes.presentation.detail.view.NoteDetailActivity
+import br.com.itau.itaunotes.notes.presentation.list.view.adapter.ListItemAdapter
 import br.com.itau.itaunotes.notes.presentation.list.viewmodel.NotesListViewModel
 import kotlinx.android.synthetic.main.activity_notes_list.*
 
@@ -22,6 +25,20 @@ class NotesListActivity : AppCompatActivity(R.layout.activity_notes_list) {
         super.onCreate(savedInstanceState)
 
         viewModel = ViewModelProvider(this, ViewModelFactory(this)).get(NotesListViewModel::class.java)
+
+        val adapter = ListItemAdapter()
+        adapter.noteClick= { note ->
+            print("Note Clicked ${note.title}")
+        }
+
+        notesList.apply {
+            this.adapter = adapter
+            this.layoutManager = LinearLayoutManager(this@NotesListActivity)
+        }
+
+        viewModel.notesList().observe(this, Observer { list ->
+            adapter.notes = list
+        })
 
         addNoteButton.setOnClickListener {
             val intent = Intent(this, NoteDetailActivity::class.java)
@@ -58,5 +75,6 @@ class NotesListActivity : AppCompatActivity(R.layout.activity_notes_list) {
     private fun logout(){
         val intent = Intent(this, LoginActivity::class.java)
         startActivity(intent)
+        finish()
     }
 }

@@ -5,7 +5,10 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
+import android.widget.ArrayAdapter
+import android.widget.SimpleAdapter
 import android.widget.Toast
+import androidx.core.view.get
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import br.com.itau.itaunotes.R
@@ -27,10 +30,23 @@ class NoteDetailActivity : AppCompatActivity(R.layout.activity_note_detail) {
         viewModel.loading().observe(this, Observer<Boolean> { _ ->
 
         })
+
+        viewModel.priorityList().observe(this, Observer<List<Int>> { list ->
+            notePrioritySpinner.apply {
+                adapter = ArrayAdapter<Int>(this@NoteDetailActivity, android.R.layout.simple_spinner_item, list)
+            }
+        })
+
         viewModel.noteSaved().observe(this, Observer<Boolean> { _ ->
             Toast.makeText(this, R.string.notes_detail_save_success, Toast.LENGTH_LONG).show()
             finish()
         })
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        viewModel.loadProperties()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -44,11 +60,10 @@ class NoteDetailActivity : AppCompatActivity(R.layout.activity_note_detail) {
             R.id.save_note -> {
 
                 val note = Note(
-                    id = -1,
                     title = noteTitleText.text.toString(),
                     summary = noteSummaryText.text.toString(),
                     description = noteContentText.text.toString(),
-                    priority = 1
+                    priority = notePrioritySpinner.selectedItemPosition + 1
                 )
 
                 viewModel.addNote(note)
