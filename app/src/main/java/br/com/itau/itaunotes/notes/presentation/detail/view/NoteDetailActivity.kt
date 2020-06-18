@@ -27,6 +27,7 @@ class NoteDetailActivity : AppCompatActivity(R.layout.activity_note_detail) {
 
         viewModel = ViewModelProvider(this, ViewModelFactory(this)).get(NoteDetailViewModel::class.java)
 
+        //TODO Implement Loading here
         viewModel.loading().observe(this, Observer<Boolean> { _ ->
 
         })

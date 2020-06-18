@@ -28,6 +28,7 @@ class NotesListActivity : AppCompatActivity(R.layout.activity_notes_list) {
 
         val adapter = ListItemAdapter()
         adapter.noteClick= { note ->
+            //TODO call Detail Here
             print("Note Clicked ${note.title}")
         }
 
