@@ -7,6 +7,7 @@ interface NotesRepositoryContract{
     suspend fun getAll(): List<Note>
     suspend fun loadById(id: Int): Note
     suspend fun insert(note: Note)
+    suspend fun update(note: Note)
     suspend fun deleteAll()
     suspend fun deleteNote(note: Note)
 
@@ -26,6 +27,10 @@ class NotesRepository(
 
     override suspend fun insert(note: Note) {
         dataSource.insertNote(note)    }
+
+    override suspend fun update(note: Note) {
+        dataSource.updateNote(note)
+    }
 
     override suspend fun deleteAll() {
         dataSource.delete()

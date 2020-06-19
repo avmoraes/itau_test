@@ -1,9 +1,6 @@
 package br.com.itau.itaunotes.notes.data.datasoruce.dao
 
-import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.Query
+import androidx.room.*
 import br.com.itau.itaunotes.notes.domain.model.Note
 
 @Dao
@@ -22,4 +19,7 @@ interface NotesDao {
 
     @Delete
     suspend fun deleteNote(note: Note)
+
+    @Update()
+    fun update(note: Note)
 }

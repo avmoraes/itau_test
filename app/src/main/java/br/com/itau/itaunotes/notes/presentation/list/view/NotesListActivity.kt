@@ -10,6 +10,8 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import br.com.itau.itaunotes.R
 import br.com.itau.itaunotes.login.presentation.view.LoginActivity
+import br.com.itau.itaunotes.notes.domain.model.Note
+import br.com.itau.itaunotes.notes.presentation.detail.view.NOTE
 import br.com.itau.itaunotes.notes.presentation.detail.view.NoteDetailActivity
 import br.com.itau.itaunotes.notes.presentation.list.view.adapter.ListItemAdapter
 import br.com.itau.itaunotes.notes.presentation.list.viewmodel.NotesListViewModel
@@ -25,8 +27,7 @@ class NotesListActivity : AppCompatActivity(R.layout.activity_notes_list) {
 
         val adapter = ListItemAdapter()
         adapter.noteClick= { note ->
-            //TODO call Detail Here
-            print("Note Clicked ${note.title}")
+            goToEdit(note)
         }
 
         notesList.apply {
@@ -74,5 +75,12 @@ class NotesListActivity : AppCompatActivity(R.layout.activity_notes_list) {
         val intent = Intent(this, LoginActivity::class.java)
         startActivity(intent)
         finish()
+    }
+
+    private fun goToEdit(note: Note){
+        val intent = Intent(this, NoteDetailActivity::class.java).apply {
+            putExtra(NOTE, note)
+        }
+        startActivity(intent)
     }
 }

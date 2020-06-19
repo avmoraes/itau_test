@@ -14,6 +14,8 @@ import br.com.itau.itaunotes.notes.presentation.detail.viewmodel.NoteDetailViewM
 import kotlinx.android.synthetic.main.activity_note_detail.*
 import org.koin.android.ext.android.inject
 
+const val NOTE = "note"
+
 class NoteDetailActivity : AppCompatActivity(R.layout.activity_note_detail) {
 
     private val viewModel: NoteDetailViewModel by inject()
@@ -21,10 +23,12 @@ class NoteDetailActivity : AppCompatActivity(R.layout.activity_note_detail) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        //TODO Implement Loading here
+       //TODO Implement Loading here
         viewModel.loading().observe(this, Observer<Boolean> { _ ->
 
         })
+
+        viewModel.loadProperties()
 
         viewModel.priorityList().observe(this, Observer<List<Int>> { list ->
             notePrioritySpinner.apply {
@@ -40,12 +44,15 @@ class NoteDetailActivity : AppCompatActivity(R.layout.activity_note_detail) {
             Toast.makeText(this, R.string.notes_detail_save_success, Toast.LENGTH_LONG).show()
             finish()
         })
-    }
 
-    override fun onStart() {
-        super.onStart()
+        intent.getParcelableExtra<Note>(NOTE)?.let { note ->
+            viewModel.setNote(note)
 
-        viewModel.loadProperties()
+            noteTitleText.setText(note.title)
+            noteSummaryText.setText(note.summary)
+            noteContentText.setText(note.description)
+            notePrioritySpinner.setSelection(note.priority - 1)
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -58,14 +65,10 @@ class NoteDetailActivity : AppCompatActivity(R.layout.activity_note_detail) {
         return when (item.itemId) {
             R.id.save_note -> {
 
-                val note = Note(
-                    title = noteTitleText.text.toString(),
-                    summary = noteSummaryText.text.toString(),
-                    description = noteContentText.text.toString(),
-                    priority = notePrioritySpinner.selectedItemPosition + 1
-                )
-
-                viewModel.addNote(note)
+                viewModel.saveNote( title = noteTitleText.text.toString(),
+                                    summary = noteSummaryText.text.toString(),
+                                    description = noteContentText.text.toString(),
+                                    priority = notePrioritySpinner.selectedItemPosition)
 
                 true
             }
