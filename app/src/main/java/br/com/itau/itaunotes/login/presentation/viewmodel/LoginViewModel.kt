@@ -4,61 +4,71 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import br.com.itau.itaunotes.login.data.repository.LoginRepositoryContract
-import br.com.itau.itaunotes.login.domain.model.User
+import br.com.itau.itaunotes.login.data.model.User
 
-interface LoginViewModelContract{
-    fun bindLoading():LiveData<Boolean>
-    fun bindValidEmail():LiveData<Boolean>
-    fun bindValidPassword():LiveData<Boolean>
-    fun bindLoginPassed():LiveData<Boolean>
-    fun bindUserInfo():LiveData<User>
-    fun login(email: String, password: String)
-    fun saveLoggedUser()
-    fun loadLoggedUser()
-}
+class LoginViewModel(private val repository: LoginRepositoryContract): ViewModel(){
 
-class LoginViewModel(private val repository: LoginRepositoryContract): ViewModel(), LoginViewModelContract{
+    private val _loading by lazy { MutableLiveData<Boolean>() }
+    private val _validEmail by lazy { MutableLiveData<Boolean>() }
+    private val _validPassword by lazy { MutableLiveData<Boolean>() }
+    private val _loginSuccess by lazy { MutableLiveData<Boolean>() }
+    private val _saveUser by lazy { MutableLiveData<Boolean>() }
+    private val _userInfo by lazy { MutableLiveData<User>() }
 
-    private val loading = MutableLiveData<Boolean>()
-    private val validEmail = MutableLiveData<Boolean>()
-    private val validPassword = MutableLiveData<Boolean>()
-    private val loginPassed = MutableLiveData<Boolean>()
-    private val userInfo = MutableLiveData<User>()
+    val isLoading: LiveData<Boolean>
+        get() = _loading
+
+    val validEmail: LiveData<Boolean>
+        get() = _validEmail
+
+    val validPassword: LiveData<Boolean>
+        get() = _validPassword
+
+    val logged: LiveData<Boolean>
+        get() = _loginSuccess
+
+    val saveLogin: LiveData<Boolean>
+        get() = _saveUser
+
+    val user: LiveData<User>
+        get() = _userInfo
 
     private lateinit var loggedUser: User
 
-    override fun bindLoading(): LiveData<Boolean> = loading
-    override fun bindValidEmail(): LiveData<Boolean> = validEmail
-    override fun bindValidPassword(): LiveData<Boolean> = validPassword
-    override fun bindLoginPassed(): LiveData<Boolean> = loginPassed
-    override fun bindUserInfo(): LiveData<User> = userInfo
-
-    override fun login(email: String, password: String){
+    fun login(email: String, password: String){
        when {
-           email.isEmpty() -> validEmail.value = false
-           password.isEmpty() -> validPassword.value = false
+           email.isEmpty() -> _validEmail.value = false
+           password.isEmpty() -> _validPassword.value = false
            else -> {
+
+               //Check the previous logged user.
+               if (loggedUser.email != email ||
+                   loggedUser.password != password) {
+
+                   _saveUser.postValue(true)
+               }
+
                loggedUser = User(email, password)
 
-               loading.value = true
+               _loading.value = true
 
                repository.login(loggedUser, {
-                   loading.value = false
-                   loginPassed.value = true
+                   _loading.value = false
+                   _loginSuccess.value = true
                }, {
-                   loading.value = false
-                   loginPassed.value = false
+                   _loading.value = false
+                   _loginSuccess.value = false
                })
            }
        }
     }
 
-    override fun saveLoggedUser() = repository.saveLoggedUser(loggedUser)
+    fun saveLoggedUser() = repository.saveLoggedUser(loggedUser)
 
-    override fun loadLoggedUser() {
+    fun load() {
         if (repository.containsLoggedUser()) {
-            val user = repository.getLogged()
-            userInfo.value = user
+            loggedUser = repository.getLogged()
+            _userInfo.value = loggedUser
         }
     }
 }

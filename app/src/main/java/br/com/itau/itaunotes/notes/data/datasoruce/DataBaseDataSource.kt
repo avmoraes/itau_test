@@ -1,7 +1,7 @@
 package br.com.itau.itaunotes.notes.data.datasoruce
 
 import br.com.itau.itaunotes.commons.data.database.AppDataBase
-import br.com.itau.itaunotes.notes.domain.model.Note
+import br.com.itau.itaunotes.notes.data.model.Note
 
 interface DataBaseDataSourceContract{
     suspend fun getAll(): List<Note>

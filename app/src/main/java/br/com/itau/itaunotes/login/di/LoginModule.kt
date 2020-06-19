@@ -1,4 +1,4 @@
-package br.com.itau.itaunotes.login
+package br.com.itau.itaunotes.login.di
 
 import android.content.Context
 import android.content.SharedPreferences

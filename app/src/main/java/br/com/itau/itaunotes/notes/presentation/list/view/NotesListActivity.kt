@@ -5,37 +5,49 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
+import androidx.annotation.VisibleForTesting
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import br.com.itau.itaunotes.R
 import br.com.itau.itaunotes.login.presentation.view.LoginActivity
-import br.com.itau.itaunotes.notes.domain.model.Note
+import br.com.itau.itaunotes.notes.data.model.Note
+import br.com.itau.itaunotes.notes.di.notesModule
 import br.com.itau.itaunotes.notes.presentation.detail.view.NOTE
 import br.com.itau.itaunotes.notes.presentation.detail.view.NoteDetailActivity
 import br.com.itau.itaunotes.notes.presentation.list.view.adapter.ListItemAdapter
 import br.com.itau.itaunotes.notes.presentation.list.viewmodel.NotesListViewModel
 import kotlinx.android.synthetic.main.activity_notes_list.*
-import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.context.loadKoinModules
 
 class NotesListActivity : AppCompatActivity(R.layout.activity_notes_list) {
 
-    private val viewModel: NotesListViewModel by inject()
+    @VisibleForTesting
+    private val listDependencies by lazy { loadKoinModules(notesModule) }
+    private fun inject() = listDependencies
+
+    private val viewModel: NotesListViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val adapter = ListItemAdapter()
-        adapter.noteClick= { note ->
-            goToEdit(note)
+        inject()
+
+        val adapter = ListItemAdapter().apply {
+            noteClick = { note ->
+                goToEdit(note)
+            }
         }
 
         notesList.apply {
             this.adapter = adapter
             this.layoutManager = LinearLayoutManager(this@NotesListActivity)
+            this.addItemDecoration(DividerItemDecoration(this@NotesListActivity,  LinearLayoutManager.VERTICAL))
         }
 
-        viewModel.notesList().observe(this, Observer { list ->
+        viewModel.list.observe(this, Observer { list ->
             adapter.notes = list
         })
 

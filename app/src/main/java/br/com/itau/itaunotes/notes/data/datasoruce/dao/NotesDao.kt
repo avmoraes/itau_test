@@ -1,7 +1,7 @@
 package br.com.itau.itaunotes.notes.data.datasoruce.dao
 
 import androidx.room.*
-import br.com.itau.itaunotes.notes.domain.model.Note
+import br.com.itau.itaunotes.notes.data.model.Note
 
 @Dao
 interface NotesDao {

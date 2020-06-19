@@ -5,7 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import br.com.itau.itaunotes.R
-import br.com.itau.itaunotes.notes.domain.model.Note
+import br.com.itau.itaunotes.notes.data.model.Note
 import kotlinx.android.synthetic.main.note_item_layout.view.*
 
 typealias noteClickListener = (Note) -> Unit

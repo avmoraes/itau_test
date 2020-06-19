@@ -1,4 +1,4 @@
-package br.com.itau.itaunotes.notes
+package br.com.itau.itaunotes.notes.di
 
 import androidx.room.Room
 import br.com.itau.itaunotes.commons.data.database.AppDataBase

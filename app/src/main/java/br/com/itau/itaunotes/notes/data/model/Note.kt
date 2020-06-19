@@ -1,4 +1,4 @@
-package br.com.itau.itaunotes.notes.domain.model
+package br.com.itau.itaunotes.notes.data.model
 
 import android.os.Parcelable
 import androidx.room.ColumnInfo

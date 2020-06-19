@@ -1,7 +1,7 @@
 package br.com.itau.itaunotes.login.data.datasource
 
 import android.content.SharedPreferences
-import br.com.itau.itaunotes.login.domain.model.User
+import br.com.itau.itaunotes.login.data.model.User
 
 const val USER_KEY = "user_login"
 

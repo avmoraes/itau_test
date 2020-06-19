@@ -5,47 +5,60 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.annotation.VisibleForTesting
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Observer
 import br.com.itau.itaunotes.R
 import br.com.itau.itaunotes.commons.hideKeyBoard
-import br.com.itau.itaunotes.login.domain.model.User
+import br.com.itau.itaunotes.login.data.model.User
+import br.com.itau.itaunotes.login.di.loginModule
 import br.com.itau.itaunotes.login.presentation.viewmodel.LoginViewModel
 import br.com.itau.itaunotes.notes.presentation.list.view.NotesListActivity
 import br.com.itau.itaunotes.notes.presentation.list.viewmodel.NotesListViewModel
 import kotlinx.android.synthetic.main.activity_main.*
-import org.koin.android.ext.android.get
 import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.context.loadKoinModules
 
 class LoginActivity : AppCompatActivity(R.layout.activity_main) {
 
-    private val viewModel: LoginViewModel by inject()
+    @VisibleForTesting
+    private val loginDependencies by lazy { loadKoinModules(loginModule) }
+    private fun inject() = loginDependencies
+
+    private val viewModel: LoginViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        viewModel.bindValidEmail().observe(this, Observer<Boolean> { _ ->
+        inject()
+
+        viewModel.validEmail.observe(this, Observer<Boolean> { _ ->
             showMsg(R.string.login_empty_email_text)
         })
 
-        viewModel.bindValidPassword().observe(this, Observer<Boolean> { _ ->
+        viewModel.validPassword.observe(this, Observer<Boolean> { _ ->
             showMsg(R.string.login_empty_password_text)
         })
 
-        viewModel.bindLoading().observe(this, Observer<Boolean> { loading ->
+        viewModel.isLoading.observe(this, Observer<Boolean> { loading ->
             loadingView.visibility = if (loading) View.VISIBLE else View.GONE
         })
 
-        viewModel.bindLoginPassed().observe(this, Observer<Boolean> { loginPassed ->
+        viewModel.logged.observe(this, Observer<Boolean> { loginPassed ->
             when {
-                loginPassed -> createSaveUserInfoDialog()?.show()
+                loginPassed -> goToNotesList()
                 else -> showMsg(R.string.login_error_text)
             }
         })
 
-        viewModel.bindUserInfo().observe(this, Observer<User> { user ->
+        viewModel.user.observe(this, Observer<User> { user ->
             loginEditText.setText(user.email)
             passwordEditText.setText(user.password)
+        })
+
+        viewModel.saveLogin.observe(this, Observer<Boolean> { _ ->
+            createSaveUserInfoDialog()
         })
 
         loginButton.setOnClickListener {
@@ -53,7 +66,7 @@ class LoginActivity : AppCompatActivity(R.layout.activity_main) {
             viewModel.login(loginEditText.text.toString(), passwordEditText.text.toString())
         }
 
-        viewModel.loadLoggedUser()
+        viewModel.load()
    }
 
     private fun showMsg(msgRes: Int){
@@ -84,7 +97,6 @@ class LoginActivity : AppCompatActivity(R.layout.activity_main) {
     private fun goToNotesList(){
         val intent = Intent(this, NotesListActivity::class.java)
         startActivity(intent)
-
         finish()
     }
 }

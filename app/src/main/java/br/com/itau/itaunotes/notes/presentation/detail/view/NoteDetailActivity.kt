@@ -1,36 +1,43 @@
 package br.com.itau.itaunotes.notes.presentation.detail.view
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.annotation.VisibleForTesting
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import br.com.itau.itaunotes.R
-import br.com.itau.itaunotes.notes.domain.model.Note
+import br.com.itau.itaunotes.notes.data.model.Note
+import br.com.itau.itaunotes.notes.di.notesDetailModule
 import br.com.itau.itaunotes.notes.presentation.detail.viewmodel.NoteDetailViewModel
 import kotlinx.android.synthetic.main.activity_note_detail.*
-import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.context.loadKoinModules
 
 const val NOTE = "note"
 
 class NoteDetailActivity : AppCompatActivity(R.layout.activity_note_detail) {
 
-    private val viewModel: NoteDetailViewModel by inject()
+    @VisibleForTesting
+    private val notesDependency by lazy { loadKoinModules(notesDetailModule) }
+    private fun inject() = notesDependency
+
+    private val viewModel: NoteDetailViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        inject()
+
        //TODO Implement Loading here
-        viewModel.loading().observe(this, Observer<Boolean> { _ ->
+        viewModel.loading.observe(this, Observer<Boolean> { _ ->
 
         })
 
-        viewModel.loadProperties()
-
-        viewModel.priorityList().observe(this, Observer<List<Int>> { list ->
+        viewModel.priorities.observe(this, Observer<List<Int>> { list ->
             notePrioritySpinner.apply {
                 adapter = ArrayAdapter<Int>(
                     this@NoteDetailActivity,
@@ -40,24 +47,28 @@ class NoteDetailActivity : AppCompatActivity(R.layout.activity_note_detail) {
             }
         })
 
-        viewModel.noteSaved().observe(this, Observer<Boolean> { _ ->
+        viewModel.noteSaved.observe(this, Observer<Boolean> { _ ->
             Toast.makeText(this, R.string.notes_detail_save_success, Toast.LENGTH_LONG).show()
             finish()
         })
 
-        intent.getParcelableExtra<Note>(NOTE)?.let { note ->
-            viewModel.setNote(note)
+        viewModel.note.observe(this, Observer { saved ->
+            saved?.let { note ->
+                noteTitleText.setText(note.title)
+                noteSummaryText.setText(note.summary)
+                noteContentText.setText(note.description)
+                notePrioritySpinner.setSelection(note.priority - 1)
+            }
+        })
 
-            noteTitleText.setText(note.title)
-            noteSummaryText.setText(note.summary)
-            noteContentText.setText(note.description)
-            notePrioritySpinner.setSelection(note.priority - 1)
-        }
+        val savedNote = intent.getParcelableExtra<Note>(NOTE)
+        viewModel.loadProperties(savedNote)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val inflater: MenuInflater = menuInflater
         inflater.inflate(R.menu.note_detail_menu, menu)
+
         return true
     }
 

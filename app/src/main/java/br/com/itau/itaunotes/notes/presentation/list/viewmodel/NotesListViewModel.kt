@@ -4,56 +4,47 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import br.com.itau.itaunotes.notes.data.repository.NotesRepositoryContract
-import br.com.itau.itaunotes.notes.domain.model.Note
+import br.com.itau.itaunotes.notes.data.model.Note
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-interface ViewModelContract{
-    fun notesList():LiveData<List<Note>>
-    fun loading():LiveData<Boolean>
-    fun deleteAllNote()
-    fun fetchNotes()
-}
-
 class NotesListViewModel(
     private val repository: NotesRepositoryContract
-): ViewModel(), ViewModelContract {
+): ViewModel() {
 
-    private val listLiveData = MutableLiveData<List<Note>>()
-    private val loadingLiveData = MutableLiveData<Boolean>()
+    private val _list by lazy { MutableLiveData<List<Note>>() }
+    private val _loading by lazy { MutableLiveData<Boolean>() }
 
-    override fun notesList(): LiveData<List<Note>> {
-        return listLiveData
-    }
+    val list: LiveData<List<Note>>
+        get() = _list
 
-    override fun loading(): LiveData<Boolean> {
-        return loadingLiveData
-    }
+    val loading: LiveData<Boolean>
+        get() = _loading
 
-    override fun deleteAllNote() {
-        loadingLiveData.value = true
+    fun deleteAllNote() {
+        _loading.value = true
 
         CoroutineScope(IO).launch {
             repository.deleteAll()
 
             withContext(Main){
-                loadingLiveData.value = false
-                listLiveData.value = listOf()
+                _loading.value = false
+                _list.value = listOf()
             }
         }
     }
 
-    override fun fetchNotes() {
-        loadingLiveData.value = true
+    fun fetchNotes() {
+        _loading.value = true
         CoroutineScope(IO).launch {
            val list = repository.getAll()
 
            withContext(Main){
-               loadingLiveData.value = false
-               listLiveData.value = list
+               _loading.value = false
+               _list.value = list
            }
        }
     }
