@@ -12,7 +12,7 @@ class LoginViewModel(private val repository: LoginRepositoryContract): ViewModel
     private val _validEmail by lazy { MutableLiveData<Boolean>() }
     private val _validPassword by lazy { MutableLiveData<Boolean>() }
     private val _loginSuccess by lazy { MutableLiveData<Boolean>() }
-    private val _saveUser by lazy { MutableLiveData<Boolean>() }
+    private val _shouldSaveUser by lazy { MutableLiveData<Boolean>() }
     private val _userInfo by lazy { MutableLiveData<User>() }
 
     val isLoading: LiveData<Boolean>
@@ -28,33 +28,31 @@ class LoginViewModel(private val repository: LoginRepositoryContract): ViewModel
         get() = _loginSuccess
 
     val saveLogin: LiveData<Boolean>
-        get() = _saveUser
+        get() = _shouldSaveUser
 
-    val user: LiveData<User>
+    val user: LiveData<User?>
         get() = _userInfo
-
-    private lateinit var loggedUser: User
 
     fun login(email: String, password: String){
        when {
            email.isEmpty() -> _validEmail.value = false
            password.isEmpty() -> _validPassword.value = false
            else -> {
-
-               //Check the previous logged user.
-               if (loggedUser.email != email ||
-                   loggedUser.password != password) {
-
-                   _saveUser.postValue(true)
-               }
-
-               loggedUser = User(email, password)
-
                _loading.value = true
 
-               repository.login(loggedUser, {
+               val user = User(email, password)
+
+               repository.login(user, {
                    _loading.value = false
-                   _loginSuccess.value = true
+
+                   //Check the previous logged user.
+                   when {
+                       (_userInfo.value?.email != email || _userInfo.value?.password != password) -> {
+                           _userInfo.value = user
+                           _shouldSaveUser.postValue(true)
+                       }
+                       else -> _loginSuccess.postValue(true)
+                   }
                }, {
                    _loading.value = false
                    _loginSuccess.value = false
@@ -63,12 +61,15 @@ class LoginViewModel(private val repository: LoginRepositoryContract): ViewModel
        }
     }
 
-    fun saveLoggedUser() = repository.saveLoggedUser(loggedUser)
+    fun saveLoggedUser() {
+        _userInfo.value?.let {user ->
+            repository.saveLoggedUser(user)
+        }
+    }
 
     fun load() {
         if (repository.containsLoggedUser()) {
-            loggedUser = repository.getLogged()
-            _userInfo.value = loggedUser
+            _userInfo.value = repository.getLogged()
         }
     }
 }

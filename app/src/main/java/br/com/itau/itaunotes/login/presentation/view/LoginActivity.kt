@@ -52,13 +52,15 @@ class LoginActivity : AppCompatActivity(R.layout.activity_main) {
             }
         })
 
-        viewModel.user.observe(this, Observer<User> { user ->
-            loginEditText.setText(user.email)
-            passwordEditText.setText(user.password)
+        viewModel.user.observe(this, Observer<User?> { user ->
+            user?.let { logged ->
+                loginEditText.setText(logged.email)
+                passwordEditText.setText(logged.password)
+            }
         })
 
         viewModel.saveLogin.observe(this, Observer<Boolean> { _ ->
-            createSaveUserInfoDialog()
+            createSaveUserInfoDialog()?.show()
         })
 
         loginButton.setOnClickListener {
@@ -90,6 +92,7 @@ class LoginActivity : AppCompatActivity(R.layout.activity_main) {
                     goToNotesList()
                 }
             }
+
             builder.create()
         }
     }
