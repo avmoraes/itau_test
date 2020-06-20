@@ -7,6 +7,7 @@ import br.com.itau.itaunotes.login.data.model.User
 import br.com.itau.itaunotes.login.data.repository.LoginRepositoryContract
 import com.nhaarman.mockitokotlin2.*
 import junit.framework.Assert.assertEquals
+import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -59,6 +60,16 @@ class LoginViewModelTest{
         viewModel.logged.observeForever(loginObserver)
         viewModel.saveLogin.observeForever(shouldSaveUserObserver)
         viewModel.user.observeForever(userInfoObserver)
+    }
+
+    @Test
+    fun `test view model properties`(){
+        Assert.assertNotNull(viewModel.isLoading)
+        Assert.assertNotNull(viewModel.validEmail)
+        Assert.assertNotNull(viewModel.validPassword)
+        Assert.assertNotNull(viewModel.logged)
+        Assert.assertNotNull(viewModel.saveLogin)
+        Assert.assertNotNull(viewModel.user)
     }
 
     @Test

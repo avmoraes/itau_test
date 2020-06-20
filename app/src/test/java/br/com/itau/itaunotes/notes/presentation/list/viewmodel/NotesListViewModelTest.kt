@@ -63,6 +63,12 @@ class NotesListViewModelTest {
     }
 
     @Test
+    fun `test view model properties`(){
+        assertNotNull(viewModel.list)
+        assertNotNull(viewModel.loading)
+    }
+
+    @Test
     fun `Test Load All Notes`() = testDispatcher.runBlockingTest {
       val mockList = listOf(
             createMockNote(1),

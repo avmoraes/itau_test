@@ -7,7 +7,6 @@ import androidx.lifecycle.viewModelScope
 import br.com.itau.itaunotes.notes.data.model.Note
 import br.com.itau.itaunotes.notes.data.repository.NotesRepositoryContract
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
