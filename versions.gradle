@@ -12,6 +12,7 @@ ext {
     junit_version = "4.12"
     junit_ext_version = "1.1.1"
     espresso_ext_version = "3.2.0"
+    core_testing_version = '2.1.0'
 }
 
 

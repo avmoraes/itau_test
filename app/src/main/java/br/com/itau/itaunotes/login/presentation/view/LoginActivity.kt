@@ -11,7 +11,9 @@ import androidx.lifecycle.Observer
 import br.com.itau.itaunotes.R
 import br.com.itau.itaunotes.commons.hideKeyBoard
 import br.com.itau.itaunotes.login.data.model.User
+import br.com.itau.itaunotes.login.di.firebaseModule
 import br.com.itau.itaunotes.login.di.loginModule
+import br.com.itau.itaunotes.login.di.prefsModule
 import br.com.itau.itaunotes.login.presentation.viewmodel.LoginViewModel
 import br.com.itau.itaunotes.notes.presentation.list.view.NotesListActivity
 import br.com.itau.itaunotes.notes.presentation.list.viewmodel.NotesListViewModel
@@ -23,7 +25,7 @@ import org.koin.core.context.loadKoinModules
 class LoginActivity : AppCompatActivity(R.layout.activity_main) {
 
     @VisibleForTesting
-    private val loginDependencies by lazy { loadKoinModules(loginModule) }
+    private val loginDependencies by lazy { loadKoinModules(listOf(prefsModule, firebaseModule, loginModule)) }
     private fun inject() = loginDependencies
 
     private val viewModel: LoginViewModel by viewModel()

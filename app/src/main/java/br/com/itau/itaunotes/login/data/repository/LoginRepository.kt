@@ -2,13 +2,13 @@ package br.com.itau.itaunotes.login.data.repository
 
 import br.com.itau.itaunotes.login.data.datasource.CacheDataSourceContract
 import br.com.itau.itaunotes.login.data.datasource.LoginDataSourceContract
-import br.com.itau.itaunotes.login.data.datasource.baseBaseCallBack
+import br.com.itau.itaunotes.login.data.datasource.baseCallBack
 import br.com.itau.itaunotes.login.data.model.User
 
 interface LoginRepositoryContract{
     fun login(request: User,
-              successCallBack: baseBaseCallBack,
-              errorCallBack: baseBaseCallBack
+              successCallBack: baseCallBack?,
+              errorCallBack: baseCallBack?
     )
     fun getLogged(): User
     fun containsLoggedUser(): Boolean
@@ -21,10 +21,14 @@ class LoginRepository(
 ): LoginRepositoryContract {
     override fun login(
         request: User,
-        successCallBack: baseBaseCallBack,
-        errorCallBack: baseBaseCallBack
+        successCallBack: baseCallBack?,
+        errorCallBack: baseCallBack?
     ) {
-        loginDataSource.login(request, successCallBack, errorCallBack)
+        loginDataSource.login(request, {
+            successCallBack?.invoke()
+        }, {
+            errorCallBack?.invoke()
+        })
     }
 
     override fun getLogged(): User = cacheDataSource.getUser()

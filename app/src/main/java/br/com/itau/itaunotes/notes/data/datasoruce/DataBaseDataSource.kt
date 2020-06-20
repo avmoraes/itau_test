@@ -12,7 +12,10 @@ interface DataBaseDataSourceContract{
     suspend fun deleteNote(note: Note)
 }
 
-class DataBaseDataSource(dataBase: AppDataBase): DataBaseDataSourceContract {
+class DataBaseDataSource(
+    dataBase: AppDataBase
+): DataBaseDataSourceContract {
+
     private val dao = dataBase.getNoteDao()
 
     override suspend fun getAll(): List<Note> {

@@ -4,18 +4,19 @@ import android.util.Log
 import br.com.itau.itaunotes.login.data.model.User
 import com.google.firebase.auth.FirebaseAuth
 
-typealias baseBaseCallBack = () -> Unit
+typealias baseCallBack = () -> Unit
 
 interface LoginDataSourceContract{
     fun login(
         loginRequest: User,
-        successCallBack: baseBaseCallBack,
-        errorCallBack: baseBaseCallBack
+        successCallBack: baseCallBack?,
+        errorCallBack: baseCallBack?
     )
 }
 
-class FirebaseDataSource: LoginDataSourceContract {
-    private val firebaseAuth = FirebaseAuth.getInstance()
+class FirebaseDataSource(
+    private val firebaseAuth: FirebaseAuth
+): LoginDataSourceContract {
 
     init {
         firebaseAuth.addAuthStateListener {
@@ -30,16 +31,16 @@ class FirebaseDataSource: LoginDataSourceContract {
 
     override fun login(
         loginRequest: User,
-        successCallBack: baseBaseCallBack,
-        errorCallBack: baseBaseCallBack
+        successCallBack: baseCallBack?,
+        errorCallBack: baseCallBack?
     ) {
         firebaseAuth.signInWithEmailAndPassword(
             loginRequest.email,
             loginRequest.password
         ).addOnCompleteListener {task ->
             when {
-                task.isSuccessful -> successCallBack.invoke()
-                else -> errorCallBack.invoke()
+                task.isSuccessful -> successCallBack?.invoke()
+                else -> errorCallBack?.invoke()
             }
         }
     }
