@@ -33,7 +33,7 @@ class NotesRepository(
     }
 
     override suspend fun deleteAll() {
-        dataSource.delete()
+        dataSource.deleteAll()
     }
 
     override suspend fun deleteNote(note: Note) {

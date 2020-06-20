@@ -1,14 +1,11 @@
 package br.com.itau.itaunotes.login.presentation.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import br.com.itau.itaunotes.login.data.datasource.baseCallBack
 import br.com.itau.itaunotes.login.data.model.User
-import br.com.itau.itaunotes.login.data.repository.LoginRepository
 import br.com.itau.itaunotes.login.data.repository.LoginRepositoryContract
 import com.nhaarman.mockitokotlin2.*
-import junit.framework.Assert
 import junit.framework.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule

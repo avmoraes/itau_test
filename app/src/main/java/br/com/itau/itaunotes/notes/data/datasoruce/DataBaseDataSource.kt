@@ -8,7 +8,7 @@ interface DataBaseDataSourceContract{
     suspend fun loadById(id: Int): Note
     suspend fun insertNote(note: Note)
     suspend fun updateNote(note: Note)
-    suspend fun delete()
+    suspend fun deleteAll()
     suspend fun deleteNote(note: Note)
 }
 
@@ -34,7 +34,7 @@ class DataBaseDataSource(
         dao.update(note)
     }
 
-    override suspend fun delete() {
+    override suspend fun deleteAll() {
         dao.deleteAll()
     }
 

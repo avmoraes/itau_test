@@ -3,16 +3,18 @@ package br.com.itau.itaunotes.notes.presentation.detail.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import br.com.itau.itaunotes.notes.data.model.Note
 import br.com.itau.itaunotes.notes.data.repository.NotesRepositoryContract
-import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class NoteDetailViewModel(
-    private val repository: NotesRepositoryContract
+    private val repository: NotesRepositoryContract,
+    private val dispatcher: CoroutineDispatcher
 ): ViewModel(){
 
     private val _loading by lazy { MutableLiveData<Boolean>() }
@@ -39,7 +41,7 @@ class NoteDetailViewModel(
 
         _loading.value = true
 
-        CoroutineScope(Dispatchers.IO).launch {
+        viewModelScope.launch(dispatcher) {
            _note.value?.let {
                 it.apply {
                     this.title = title

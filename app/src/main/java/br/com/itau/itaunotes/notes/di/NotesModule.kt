@@ -8,23 +8,30 @@ import br.com.itau.itaunotes.notes.data.repository.NotesRepository
 import br.com.itau.itaunotes.notes.data.repository.NotesRepositoryContract
 import br.com.itau.itaunotes.notes.presentation.detail.viewmodel.NoteDetailViewModel
 import br.com.itau.itaunotes.notes.presentation.list.viewmodel.NotesListViewModel
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import org.koin.android.ext.koin.androidApplication
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
-val notesModule = module {
+val dataBaseModule = module {
     single { Room.databaseBuilder(
                 androidApplication(),
                 AppDataBase::class.java, "database-name"
-                    ).build()
+            ).build()
     }
+}
 
+val notesRepoModule = module {
+    factory { Dispatchers.IO }
     factory<DataBaseDataSourceContract> { DataBaseDataSource(get()) }
     single<NotesRepositoryContract> { NotesRepository(get()) }
+}
 
-    viewModel { NotesListViewModel(get()) }
+val notesModule = module {
+    viewModel { NotesListViewModel(get(), get()) }
 }
 
 val notesDetailModule = module {
-    viewModel { NoteDetailViewModel(get()) }
+    viewModel { NoteDetailViewModel(get(), get()) }
 }
