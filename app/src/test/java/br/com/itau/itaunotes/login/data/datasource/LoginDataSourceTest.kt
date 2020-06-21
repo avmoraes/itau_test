@@ -1,10 +1,7 @@
 package br.com.itau.itaunotes.login.data.datasource
 
+import br.com.itau.itaunotes.login.data.datasource.auth.AuthContract
 import br.com.itau.itaunotes.login.data.model.User
-import com.google.android.gms.tasks.OnCompleteListener
-import com.google.android.gms.tasks.Task
-import com.google.firebase.auth.AuthResult
-import com.google.firebase.auth.FirebaseAuth
 import com.nhaarman.mockitokotlin2.*
 import org.junit.Before
 import org.junit.Test
@@ -21,10 +18,13 @@ class LoginDataSourceTest: AutoCloseKoinTest(){
     private lateinit var loginDataSourceContract: LoginDataSourceContract
 
     @Captor
-    private lateinit var authResultCaptor: ArgumentCaptor<OnCompleteListener<AuthResult>>
+    private lateinit var authSuccessCaptor: ArgumentCaptor<baseCallBack>
+
+    @Captor
+    private lateinit var authErrorCaptor: ArgumentCaptor<baseCallBack>
 
     @Mock
-    private lateinit var firebaseAuthMock: FirebaseAuth
+    private lateinit var firebaseAuthMock: AuthContract
 
     @Before
     fun setUp(){
@@ -37,15 +37,10 @@ class LoginDataSourceTest: AutoCloseKoinTest(){
 
         val successCallBackMock = mock<baseCallBack>()
         val errorCallBackMock = mock<baseCallBack>()
-        val authTaskMock = mock<Task<AuthResult>>()
-
-        whenever(firebaseAuthMock.signInWithEmailAndPassword(any(), any())).doReturn(authTaskMock)
-        whenever(authTaskMock.isSuccessful).doReturn(true)
 
         loginDataSourceContract.login(user, successCallBackMock, errorCallBackMock)
-
-        verify(authTaskMock).addOnCompleteListener(authResultCaptor.capture())
-        authResultCaptor.value.onComplete(authTaskMock)
+        verify(firebaseAuthMock).loginByEmail(any(), any(), authSuccessCaptor.capture(), any())
+        authSuccessCaptor.value.invoke()
 
         verify(successCallBackMock).invoke()
     }
@@ -56,15 +51,10 @@ class LoginDataSourceTest: AutoCloseKoinTest(){
 
         val successCallBackMock = mock<baseCallBack>()
         val errorCallBackMock = mock<baseCallBack>()
-        val authTaskMock = mock<Task<AuthResult>>()
-
-        whenever(firebaseAuthMock.signInWithEmailAndPassword(any(), any())).doReturn(authTaskMock)
-        whenever(authTaskMock.isSuccessful).doReturn(false)
 
         loginDataSourceContract.login(user, successCallBackMock, errorCallBackMock)
-
-        verify(authTaskMock).addOnCompleteListener(authResultCaptor.capture())
-        authResultCaptor.value.onComplete(authTaskMock)
+        verify(firebaseAuthMock).loginByEmail(any(), any(), any(), authErrorCaptor.capture())
+        authErrorCaptor.value.invoke()
 
         verify(errorCallBackMock).invoke()
     }

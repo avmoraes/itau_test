@@ -3,7 +3,9 @@ package br.com.itau.itaunotes.login.data.datasource
 import android.content.SharedPreferences
 import br.com.itau.itaunotes.login.data.model.User
 import com.nhaarman.mockitokotlin2.*
-import junit.framework.Assert.*
+import junit.framework.TestCase.assertEquals
+import junit.framework.TestCase.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith

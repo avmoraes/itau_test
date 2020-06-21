@@ -1,20 +1,20 @@
-package br.com.itau.itaunotes
+package br.com.itau.itaunotes.mocks
 
 import android.app.Application
-import br.com.itau.itaunotes.login.di.authModule
 import br.com.itau.itaunotes.login.di.loginModule
 import br.com.itau.itaunotes.notes.di.notesDetailModule
 import br.com.itau.itaunotes.notes.di.notesModule
 import org.koin.android.ext.koin.androidContext
+import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
 
-class ItauNotesApplication: Application() {
+class KoinTestApp: Application() {
     override fun onCreate() {
         super.onCreate()
-
         startKoin {
-            androidContext(this@ItauNotesApplication)
-            modules(authModule, loginModule ,notesModule, notesDetailModule)
+            androidLogger()
+            androidContext(this@KoinTestApp)
+            modules(mockedDataSource, loginModule , notesModule, notesDetailModule)
         }
     }
 }

@@ -5,7 +5,7 @@ import br.com.itau.itaunotes.login.data.datasource.LoginDataSourceContract
 import br.com.itau.itaunotes.login.data.repository.LoginRepositoryContract
 import br.com.itau.itaunotes.mocks.firebaseMockModule
 import br.com.itau.itaunotes.mocks.prefsMockModule
-import junit.framework.Assert.assertNotNull
+import org.junit.Assert.assertNotNull
 import org.junit.Before
 import org.junit.Test
 import org.koin.core.context.startKoin
@@ -17,7 +17,7 @@ class LoginModuleTest: AutoCloseKoinTest(){
     @Before
     fun setup(){
         startKoin{
-            modules(prefsMockModule, firebaseMockModule, loginModule)
+            modules(prefsMockModule, firebaseMockModule, loginDependenciesModule)
         }
     }
 

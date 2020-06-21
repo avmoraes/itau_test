@@ -1,39 +1,30 @@
 package br.com.itau.itaunotes.login.presentation.view
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
-import androidx.annotation.VisibleForTesting
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import br.com.itau.itaunotes.R
 import br.com.itau.itaunotes.commons.hideKeyBoard
 import br.com.itau.itaunotes.login.data.model.User
-import br.com.itau.itaunotes.login.di.firebaseModule
-import br.com.itau.itaunotes.login.di.loginModule
-import br.com.itau.itaunotes.login.di.prefsModule
+import br.com.itau.itaunotes.login.di.loadDependencies
 import br.com.itau.itaunotes.login.presentation.viewmodel.LoginViewModel
 import br.com.itau.itaunotes.notes.presentation.list.view.NotesListActivity
-import br.com.itau.itaunotes.notes.presentation.list.viewmodel.NotesListViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.koin.core.context.loadKoinModules
 
 class LoginActivity : AppCompatActivity(R.layout.activity_main) {
-
-    @VisibleForTesting
-    private val loginDependencies by lazy { loadKoinModules(listOf(prefsModule, firebaseModule, loginModule)) }
-    private fun inject() = loginDependencies
 
     private val viewModel: LoginViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        inject()
+        loadDependencies()
 
         viewModel.validEmail.observe(this, Observer<Boolean> { _ ->
             showMsg(R.string.login_empty_email_text)

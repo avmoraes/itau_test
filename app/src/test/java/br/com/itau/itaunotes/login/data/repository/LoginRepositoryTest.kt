@@ -5,7 +5,7 @@ import br.com.itau.itaunotes.login.data.datasource.LoginDataSourceContract
 import br.com.itau.itaunotes.login.data.datasource.baseCallBack
 import br.com.itau.itaunotes.login.data.model.User
 import com.nhaarman.mockitokotlin2.*
-import junit.framework.Assert.*
+import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith

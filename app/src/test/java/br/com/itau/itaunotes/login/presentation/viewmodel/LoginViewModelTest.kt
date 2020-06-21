@@ -6,8 +6,8 @@ import br.com.itau.itaunotes.login.data.datasource.baseCallBack
 import br.com.itau.itaunotes.login.data.model.User
 import br.com.itau.itaunotes.login.data.repository.LoginRepositoryContract
 import com.nhaarman.mockitokotlin2.*
-import junit.framework.Assert.assertEquals
 import org.junit.Assert
+import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test

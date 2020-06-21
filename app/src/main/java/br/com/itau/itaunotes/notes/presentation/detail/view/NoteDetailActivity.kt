@@ -6,33 +6,25 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.widget.ArrayAdapter
 import android.widget.Toast
-import androidx.annotation.VisibleForTesting
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import br.com.itau.itaunotes.R
 import br.com.itau.itaunotes.notes.data.model.Note
-import br.com.itau.itaunotes.notes.di.dataBaseModule
-import br.com.itau.itaunotes.notes.di.notesDetailModule
-import br.com.itau.itaunotes.notes.di.notesRepoModule
+import br.com.itau.itaunotes.notes.di.loadDependencies
 import br.com.itau.itaunotes.notes.presentation.detail.viewmodel.NoteDetailViewModel
 import kotlinx.android.synthetic.main.activity_note_detail.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.koin.core.context.loadKoinModules
 
 const val NOTE = "note"
 
 class NoteDetailActivity : AppCompatActivity(R.layout.activity_note_detail) {
-
-    @VisibleForTesting
-    private val notesDependency by lazy { loadKoinModules(listOf(dataBaseModule, notesRepoModule, notesDetailModule)) }
-    private fun inject() = notesDependency
 
     private val viewModel: NoteDetailViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        inject()
+        loadDependencies()
 
        //TODO Implement Loading here
         viewModel.loading.observe(this, Observer<Boolean> { _ ->

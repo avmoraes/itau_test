@@ -9,8 +9,8 @@ import br.com.itau.itaunotes.notes.presentation.detail.viewmodel.NoteDetailViewM
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.times
 import com.nhaarman.mockitokotlin2.verify
-import junit.framework.Assert.assertTrue
 import junit.framework.TestCase
+import junit.framework.TestCase.assertTrue
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.test.TestCoroutineDispatcher
 import kotlinx.coroutines.test.resetMain

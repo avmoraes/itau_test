@@ -1,5 +1,6 @@
 package br.com.itau.itaunotes.notes.di
 
+import androidx.annotation.VisibleForTesting
 import androidx.room.Room
 import br.com.itau.itaunotes.commons.data.database.AppDataBase
 import br.com.itau.itaunotes.notes.data.datasoruce.DataBaseDataSource
@@ -11,6 +12,7 @@ import br.com.itau.itaunotes.notes.presentation.list.viewmodel.NotesListViewMode
 import kotlinx.coroutines.Dispatchers
 import org.koin.android.ext.koin.androidApplication
 import org.koin.androidx.viewmodel.dsl.viewModel
+import org.koin.core.context.loadKoinModules
 import org.koin.dsl.module
 
 val dataBaseModule = module {
@@ -34,3 +36,8 @@ val notesModule = module {
 val notesDetailModule = module {
     viewModel { NoteDetailViewModel(get(), get()) }
 }
+
+@VisibleForTesting
+private val notesDependency by lazy { loadKoinModules(listOf(dataBaseModule, notesRepoModule)) }
+internal fun loadDependencies() = notesDependency
+

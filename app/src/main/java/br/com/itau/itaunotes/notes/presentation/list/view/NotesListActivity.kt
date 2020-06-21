@@ -14,6 +14,7 @@ import br.com.itau.itaunotes.R
 import br.com.itau.itaunotes.login.presentation.view.LoginActivity
 import br.com.itau.itaunotes.notes.data.model.Note
 import br.com.itau.itaunotes.notes.di.dataBaseModule
+import br.com.itau.itaunotes.notes.di.loadDependencies
 import br.com.itau.itaunotes.notes.di.notesModule
 import br.com.itau.itaunotes.notes.di.notesRepoModule
 import br.com.itau.itaunotes.notes.presentation.detail.view.NOTE
@@ -26,16 +27,12 @@ import org.koin.core.context.loadKoinModules
 
 class NotesListActivity : AppCompatActivity(R.layout.activity_notes_list) {
 
-    @VisibleForTesting
-    private val listDependencies by lazy { loadKoinModules(listOf(dataBaseModule, notesRepoModule, notesModule)) }
-    private fun inject() = listDependencies
-
     private val viewModel: NotesListViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        inject()
+        loadDependencies()
 
         val adapter = ListItemAdapter().apply {
             noteClick = { note ->
