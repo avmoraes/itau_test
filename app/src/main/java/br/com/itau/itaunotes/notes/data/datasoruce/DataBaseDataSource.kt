@@ -1,6 +1,6 @@
 package br.com.itau.itaunotes.notes.data.datasoruce
 
-import br.com.itau.itaunotes.commons.data.database.AppDataBase
+import br.com.itau.itaunotes.notes.data.datasoruce.dao.NotesDao
 import br.com.itau.itaunotes.notes.data.model.Note
 
 interface DataBaseDataSourceContract{
@@ -13,10 +13,8 @@ interface DataBaseDataSourceContract{
 }
 
 class DataBaseDataSource(
-    dataBase: AppDataBase
+    private val dao: NotesDao
 ): DataBaseDataSourceContract {
-
-    private val dao = dataBase.getNoteDao()
 
     override suspend fun getAll(): List<Note> {
         return dao.getAll()

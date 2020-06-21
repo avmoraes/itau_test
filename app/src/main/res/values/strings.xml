@@ -23,6 +23,7 @@
     <string name="notes_detail_summary">Resumo</string>
     <string name="notes_detail_content">Descrição</string>
     <string name="notes_detail_save">Salvar Nota</string>
+    <string name="notes_detail_empty_title">Informe pelo menos um Titulo.</string>
     <string name="notes_detail_save_success">Nota salva com sucesso</string>
 
 </resources>

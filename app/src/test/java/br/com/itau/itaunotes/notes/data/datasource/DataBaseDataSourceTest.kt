@@ -1,11 +1,13 @@
 package br.com.itau.itaunotes.notes.data.datasource
 
-import br.com.itau.itaunotes.commons.data.database.AppDataBase
 import br.com.itau.itaunotes.mocks.createMockNote
 import br.com.itau.itaunotes.notes.data.datasoruce.DataBaseDataSource
 import br.com.itau.itaunotes.notes.data.datasoruce.DataBaseDataSourceContract
 import br.com.itau.itaunotes.notes.data.datasoruce.dao.NotesDao
-import com.nhaarman.mockitokotlin2.*
+import com.nhaarman.mockitokotlin2.any
+import com.nhaarman.mockitokotlin2.doReturn
+import com.nhaarman.mockitokotlin2.verify
+import com.nhaarman.mockitokotlin2.whenever
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertTrue
 import kotlinx.coroutines.test.runBlockingTest
@@ -26,12 +28,7 @@ class DataBaseDataSourceTest {
 
     @Before
     fun setUp(){
-
-        val dataBase = mock<AppDataBase>()
-
-        whenever(dataBase.getNoteDao()).doReturn(dao)
-
-        dataBaseDataSource = DataBaseDataSource(dataBase)
+        dataBaseDataSource = DataBaseDataSource(dao)
     }
 
     @Test

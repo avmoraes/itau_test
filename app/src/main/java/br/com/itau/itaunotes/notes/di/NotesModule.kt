@@ -5,6 +5,7 @@ import androidx.room.Room
 import br.com.itau.itaunotes.commons.data.database.AppDataBase
 import br.com.itau.itaunotes.notes.data.datasoruce.DataBaseDataSource
 import br.com.itau.itaunotes.notes.data.datasoruce.DataBaseDataSourceContract
+import br.com.itau.itaunotes.notes.data.datasoruce.dao.NotesDao
 import br.com.itau.itaunotes.notes.data.repository.NotesRepository
 import br.com.itau.itaunotes.notes.data.repository.NotesRepositoryContract
 import br.com.itau.itaunotes.notes.presentation.detail.viewmodel.NoteDetailViewModel
@@ -18,14 +19,18 @@ import org.koin.dsl.module
 val dataBaseModule = module {
     single { Room.databaseBuilder(
                 androidApplication(),
-                AppDataBase::class.java, "database-name"
+                AppDataBase::class.java, "notes_data_base"
             ).build()
     }
+
+    factory<NotesDao> { get<AppDataBase>().getNoteDao() }
 }
 
 val notesRepoModule = module {
     factory { Dispatchers.IO }
+
     factory<DataBaseDataSourceContract> { DataBaseDataSource(get()) }
+
     single<NotesRepositoryContract> { NotesRepository(get()) }
 }
 
@@ -38,6 +43,6 @@ val notesDetailModule = module {
 }
 
 @VisibleForTesting
-private val notesDependency by lazy { loadKoinModules(listOf(dataBaseModule, notesRepoModule)) }
+private val notesDependency by lazy { loadKoinModules(listOf(notesRepoModule)) }
 internal fun loadDependencies() = notesDependency
 

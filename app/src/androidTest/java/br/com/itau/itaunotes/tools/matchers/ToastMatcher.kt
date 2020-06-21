@@ -1,4 +1,4 @@
-package br.com.itau.itaunotes.matchers
+package br.com.itau.itaunotes.tools.matchers
 
 import android.os.IBinder
 

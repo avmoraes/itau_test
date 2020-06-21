@@ -14,13 +14,12 @@ import br.com.itau.itaunotes.R
 import br.com.itau.itaunotes.login.data.datasource.USER_EMAIL_KEY
 import br.com.itau.itaunotes.login.data.datasource.USER_PASSWORD_KEY
 import br.com.itau.itaunotes.login.data.datasource.USER_SHARED
-import br.com.itau.itaunotes.matchers.ToastMatcher
+import br.com.itau.itaunotes.tools.matchers.ToastMatcher
 import junit.framework.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-
 
 @RunWith(AndroidJUnit4ClassRunner::class)
 class LoginActivityTest{

@@ -13,7 +13,7 @@ android {
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
-        testInstrumentationRunner "br.com.itau.itaunotes.mocks.KoinRunner"
+        testInstrumentationRunner "br.com.itau.itaunotes.tools.mocks.KoinRunner"
     }
 
     buildTypes {
@@ -77,6 +77,7 @@ dependencies {
     androidTestImplementation "androidx.test:runner:$android_x_test_version"
     androidTestImplementation "androidx.test.ext:junit:$junit_ext_version"
     androidTestImplementation "androidx.test.espresso:espresso-core:$espresso_ext_version"
+    androidTestImplementation "androidx.test.espresso:espresso-contrib:$espresso_ext_version"
     androidTestImplementation "org.mockito:mockito-android:$mockito_version"
     androidTestImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:$mockito_kotlin_version"
 }

@@ -55,6 +55,10 @@ class NoteDetailActivity : AppCompatActivity(R.layout.activity_note_detail) {
             }
         })
 
+        viewModel.validTitle.observe(this, Observer {
+            Toast.makeText(this, R.string.notes_detail_empty_title ,Toast.LENGTH_LONG).show()
+        })
+
         val savedNote = intent.getParcelableExtra<Note>(NOTE)
         viewModel.loadProperties(savedNote)
     }

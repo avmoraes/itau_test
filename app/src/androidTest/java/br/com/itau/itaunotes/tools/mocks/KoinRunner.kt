@@ -1,4 +1,4 @@
-package br.com.itau.itaunotes.mocks
+package br.com.itau.itaunotes.tools.mocks
 
 import android.app.Application
 import android.content.Context

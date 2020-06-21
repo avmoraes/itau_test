@@ -20,6 +20,7 @@ class NoteDetailViewModel(
     private val _noteSaved by lazy { MutableLiveData<Boolean>() }
     private val _priorities by lazy { MutableLiveData(listOf(1, 2, 3, 4, 5)) }
     private val _note by lazy { MutableLiveData<Note?>() }
+    private val _validTitle by lazy { MutableLiveData<Boolean>() }
 
     val loading: LiveData<Boolean>
         get() = _loading
@@ -33,37 +34,45 @@ class NoteDetailViewModel(
     val note: LiveData<Note?>
         get() = _note
 
+    val validTitle: LiveData<Boolean>
+        get() = _validTitle
+
     fun saveNote(title: String,
                           summary: String,
                           description: String,
                           priority: Int) {
 
-        _loading.value = true
-
-        viewModelScope.launch(dispatcher) {
-           _note.value?.let {
-                it.apply {
-                    this.title = title
-                    this.summary = summary
-                    this.description = description
-                    this.priority = priority + 1
-                }
-
-                repository.update(it)
-            } ?: run {
-                val noteToSave = Note(
-                    title = title,
-                    summary = summary,
-                    description = description,
-                    priority = priority + 1
-                )
-
-                repository.insert(noteToSave)
-            }
-
-            withContext(Main){
+        when {
+            title.isEmpty()-> _validTitle.value = false
+            else -> {
                 _loading.value = true
-                _noteSaved.value = true
+
+                viewModelScope.launch(dispatcher) {
+                    _note.value?.let {
+                        it.apply {
+                            this.title = title
+                            this.summary = summary
+                            this.description = description
+                            this.priority = priority + 1
+                        }
+
+                        repository.update(it)
+                    } ?: run {
+                        val noteToSave = Note(
+                            title = title,
+                            summary = summary,
+                            description = description,
+                            priority = priority + 1
+                        )
+
+                        repository.insert(noteToSave)
+                    }
+
+                    withContext(Main){
+                        _loading.value = true
+                        _noteSaved.value = true
+                    }
+                }
             }
         }
     }

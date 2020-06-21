@@ -1,4 +1,4 @@
-package br.com.itau.itaunotes.mocks
+package br.com.itau.itaunotes.tools.mocks
 
 import android.app.Application
 import br.com.itau.itaunotes.login.di.loginModule
@@ -14,7 +14,9 @@ class KoinTestApp: Application() {
         startKoin {
             androidLogger()
             androidContext(this@KoinTestApp)
-            modules(mockedAuth, loginModule , notesModule, notesDetailModule)
+            modules(
+                mockedAuth,
+                notesDaoMock, loginModule , notesModule, notesDetailModule)
         }
     }
 }
