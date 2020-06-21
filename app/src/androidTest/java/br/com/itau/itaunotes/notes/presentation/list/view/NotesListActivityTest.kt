@@ -64,7 +64,7 @@ class NotesListActivityTest {
 
         onView(withId(R.id.notePrioritySpinner)).check(matches(withSpinnerText(containsString("1"))))
 
-       onView(withId(R.id.noteContent)).check(matches(ViewMatchers.isDisplayed()))
+        onView(withId(R.id.noteContent)).check(matches(ViewMatchers.isDisplayed()))
         onView(withId(R.id.noteContentText)).check(matches(withText(note.description)))
     }
 }

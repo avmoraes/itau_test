@@ -1,11 +1,10 @@
-package br.com.itau.itaunotes.notes.presentation.detail
+package br.com.itau.itaunotes.notes.presentation.detail.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
 import br.com.itau.itaunotes.mocks.createMockNote
 import br.com.itau.itaunotes.notes.data.model.Note
 import br.com.itau.itaunotes.notes.data.repository.NotesRepositoryContract
-import br.com.itau.itaunotes.notes.presentation.detail.viewmodel.NoteDetailViewModel
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.times
 import com.nhaarman.mockitokotlin2.verify
@@ -35,6 +34,8 @@ class NoteDetailViewModelTest {
     lateinit var noteSavedCaptor: ArgumentCaptor<Boolean>
     @Captor
     lateinit var notesCaptor: ArgumentCaptor<Note>
+    @Captor
+    lateinit var validTitleCaptor: ArgumentCaptor<Boolean>
 
     @Mock
     private lateinit var loadingObserver: Observer<Boolean>
@@ -42,6 +43,8 @@ class NoteDetailViewModelTest {
     private lateinit var savedObserver: Observer<Boolean>
     @Mock
     private lateinit var noteObserver: Observer<Note?>
+    @Mock
+    private lateinit var validTitleObserver: Observer<Boolean>
 
     private lateinit var testDispatcher: TestCoroutineDispatcher
     private lateinit var viewModel: NoteDetailViewModel
@@ -55,6 +58,7 @@ class NoteDetailViewModelTest {
         viewModel.note.observeForever(noteObserver)
         viewModel.loading.observeForever(loadingObserver)
         viewModel.noteSaved.observeForever(savedObserver)
+        viewModel.validTitle.observeForever(validTitleObserver)
     }
 
     @After
@@ -131,4 +135,19 @@ class NoteDetailViewModelTest {
             TestCase.assertEquals(mockNote.id, this.value.id)
         }
    }
+
+    @Test
+    fun `test empty title`(){
+        viewModel.saveNote(
+            title = "",
+            summary = "this is summary",
+            description = "imagine this is a huge description",
+            priority = 5
+        )
+
+       validTitleCaptor.run {
+            verify(validTitleObserver, times(1)).onChanged(capture())
+            TestCase.assertFalse(this.value)
+        }
+    }
 }

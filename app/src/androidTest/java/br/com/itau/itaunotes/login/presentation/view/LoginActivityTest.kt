@@ -16,6 +16,7 @@ import br.com.itau.itaunotes.login.data.datasource.USER_PASSWORD_KEY
 import br.com.itau.itaunotes.login.data.datasource.USER_SHARED
 import br.com.itau.itaunotes.tools.matchers.ToastMatcher
 import junit.framework.Assert.assertEquals
+import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -30,6 +31,11 @@ class LoginActivityTest{
     @Before
     fun setUp(){
         sharedPreferences = getInstrumentation().targetContext.getSharedPreferences(USER_SHARED, Context.MODE_PRIVATE)
+    }
+
+    @After
+    fun tearDown(){
+        clearShared()
     }
 
     @Test
@@ -59,18 +65,6 @@ class LoginActivityTest{
     fun test_login_button(){
         onView(withId(R.id.loginButton)).check(matches(isDisplayed()))
         onView(withId(R.id.loginButton)).check(matches(withText(R.string.login_bt_text)))
-    }
-
-    @Test
-    fun test_login_button_press(){
-        setShared()
-
-        onView(withId(R.id.loginEditText)).perform(replaceText("notaspessoais@desafioitau.com"))
-        onView(withId(R.id.passwordEditText)).perform(replaceText("admin123"))
-
-        onView(withId(R.id.loginButton)).perform(click())
-
-        onView(withId(R.id.notesList)).check(matches(isDisplayed()))
     }
 
     @Test
@@ -130,6 +124,7 @@ class LoginActivityTest{
         onView(withId(R.id.passwordEditText)).perform(replaceText("admin123"))
 
         onView(withId(R.id.loginButton)).perform(click())
+        onView(withText(R.string.login_save_info_alert_content)).check(matches(isDisplayed()))
         onView(withId(android.R.id.button1)).perform(click())
 
         val emailSaved = sharedPreferences.getString(USER_EMAIL_KEY,"")
@@ -139,14 +134,15 @@ class LoginActivityTest{
 
     private fun clearShared(){
         val editor = sharedPreferences.edit()
-        editor.clear()
+        editor.clear().apply()
         editor.commit()
     }
 
     private fun setShared(){
         val editor = sharedPreferences.edit()
-        editor.putString(USER_EMAIL_KEY, "notaspessoais@desafioitau.com")
-        editor.putString(USER_PASSWORD_KEY, "admin123")
+
+        editor.putString(USER_EMAIL_KEY, "notaspessoais@desafioitau.com").apply()
+        editor.putString(USER_PASSWORD_KEY, "admin123").apply()
 
         editor.commit()
     }
