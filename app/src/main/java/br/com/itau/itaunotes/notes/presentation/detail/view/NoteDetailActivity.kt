@@ -26,11 +26,6 @@ class NoteDetailActivity : AppCompatActivity(R.layout.activity_note_detail) {
 
         loadDependencies()
 
-       //TODO Implement Loading here
-        viewModel.loading.observe(this, Observer<Boolean> { _ ->
-
-        })
-
         viewModel.priorities.observe(this, Observer<List<Int>> { list ->
             notePrioritySpinner.apply {
                 adapter = ArrayAdapter<Int>(

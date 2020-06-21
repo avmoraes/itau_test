@@ -16,14 +16,10 @@ class NoteDetailViewModel(
     private val dispatcher: CoroutineDispatcher
 ): ViewModel(){
 
-    private val _loading by lazy { MutableLiveData<Boolean>() }
     private val _noteSaved by lazy { MutableLiveData<Boolean>() }
     private val _priorities by lazy { MutableLiveData(listOf(1, 2, 3, 4, 5)) }
     private val _note by lazy { MutableLiveData<Note?>() }
     private val _validTitle by lazy { MutableLiveData<Boolean>() }
-
-    val loading: LiveData<Boolean>
-        get() = _loading
 
     val noteSaved: LiveData<Boolean>
         get() = _noteSaved
@@ -45,8 +41,6 @@ class NoteDetailViewModel(
         when {
             title.isEmpty()-> _validTitle.value = false
             else -> {
-                _loading.value = true
-
                 viewModelScope.launch(dispatcher) {
                     _note.value?.let {
                         it.apply {
@@ -69,7 +63,6 @@ class NoteDetailViewModel(
                     }
 
                     withContext(Main){
-                        _loading.value = true
                         _noteSaved.value = true
                     }
                 }

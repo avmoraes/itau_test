@@ -38,8 +38,6 @@ class NoteDetailViewModelTest {
     lateinit var validTitleCaptor: ArgumentCaptor<Boolean>
 
     @Mock
-    private lateinit var loadingObserver: Observer<Boolean>
-    @Mock
     private lateinit var savedObserver: Observer<Boolean>
     @Mock
     private lateinit var noteObserver: Observer<Note?>
@@ -56,7 +54,6 @@ class NoteDetailViewModelTest {
 
         viewModel = NoteDetailViewModel(repository, testDispatcher)
         viewModel.note.observeForever(noteObserver)
-        viewModel.loading.observeForever(loadingObserver)
         viewModel.noteSaved.observeForever(savedObserver)
         viewModel.validTitle.observeForever(validTitleObserver)
     }
@@ -70,7 +67,6 @@ class NoteDetailViewModelTest {
     @Test
     fun `test view model properties`(){
         Assert.assertNotNull(viewModel.note)
-        Assert.assertNotNull(viewModel.loading)
         Assert.assertNotNull(viewModel.noteSaved)
         Assert.assertNotNull(viewModel.priorities)
    }
@@ -85,10 +81,6 @@ class NoteDetailViewModelTest {
         )
 
         verify(repository).insert(any())
-
-        loadingCaptor.run {
-            verify(loadingObserver, times(2)).onChanged(capture())
-        }
 
         noteSavedCaptor.run {
             verify(savedObserver, times(1)).onChanged(capture())
@@ -111,10 +103,6 @@ class NoteDetailViewModelTest {
         )
 
         verify(repository).update(any())
-
-        loadingCaptor.run {
-            verify(loadingObserver, times(2)).onChanged(capture())
-        }
 
         noteSavedCaptor.run {
             verify(savedObserver, times(1)).onChanged(capture())
