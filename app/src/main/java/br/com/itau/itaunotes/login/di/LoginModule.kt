@@ -20,7 +20,7 @@ val authModule = module {
 }
 
 val prefsModule = module {
-    single <SharedPreferences> { androidContext().getSharedPreferences(USER_KEY, Context.MODE_PRIVATE) }
+    single <SharedPreferences> { androidContext().getSharedPreferences(USER_SHARED, Context.MODE_PRIVATE) }
 }
 
 val loginDependenciesModule = module {
@@ -34,6 +34,6 @@ val loginModule = module {
 }
 
 @VisibleForTesting
-private val loginDependencies by lazy { loadKoinModules(listOf(prefsModule, authModule, loginDependenciesModule)) }
+private val loginDependencies by lazy { loadKoinModules(listOf(prefsModule, loginDependenciesModule)) }
 internal fun loadDependencies() = loginDependencies
 

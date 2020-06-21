@@ -14,7 +14,7 @@ class KoinTestApp: Application() {
         startKoin {
             androidLogger()
             androidContext(this@KoinTestApp)
-            modules(mockedDataSource, loginModule , notesModule, notesDetailModule)
+            modules(mockedAuth, loginModule , notesModule, notesDetailModule)
         }
     }
 }

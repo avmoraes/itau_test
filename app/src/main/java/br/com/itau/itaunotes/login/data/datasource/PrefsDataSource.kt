@@ -3,7 +3,9 @@ package br.com.itau.itaunotes.login.data.datasource
 import android.content.SharedPreferences
 import br.com.itau.itaunotes.login.data.model.User
 
-const val USER_KEY = "user_login"
+const val USER_SHARED = "user_login"
+const val USER_EMAIL_KEY = "user_email"
+const val USER_PASSWORD_KEY = "user_password"
 
 interface CacheDataSourceContract{
     fun getUser(): User
@@ -15,22 +17,19 @@ class CacheDataSource(
     private val sharedPreferences: SharedPreferences
 ): CacheDataSourceContract {
 
-    private val userEmail = "user_email"
-    private val userPassword = "user_password"
-
     override fun getUser(): User {
-        val email = sharedPreferences.getString(userEmail, "") ?: ""
-        val password = sharedPreferences.getString(userPassword, "") ?: ""
+        val email = sharedPreferences.getString(USER_EMAIL_KEY, "") ?: ""
+        val password = sharedPreferences.getString(USER_PASSWORD_KEY, "") ?: ""
 
         return User(email, password)
     }
 
     override fun saveOrUpdateUser(user: User) {
-        sharedPreferences.edit().putString(userEmail, user.email).apply()
-        sharedPreferences.edit().putString(userPassword, user.password).apply()
+        sharedPreferences.edit().putString(USER_EMAIL_KEY, user.email).apply()
+        sharedPreferences.edit().putString(USER_PASSWORD_KEY, user.password).apply()
     }
 
     override fun containUserLogin(): Boolean {
-        return sharedPreferences.contains(userEmail) && sharedPreferences.contains(userPassword)
+        return sharedPreferences.contains(USER_EMAIL_KEY) && sharedPreferences.contains(USER_PASSWORD_KEY)
     }
 }
