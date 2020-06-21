@@ -1,6 +1,4 @@
-# itau_test
-
-Desafio Itaú
+# Desafio Itaú
 
 Objetivo: Criar uma aplicação mobile de notas pessoais (exemplo: google keep). A aplicação deverá ter pelo menos três activities, sendo estas:
 
